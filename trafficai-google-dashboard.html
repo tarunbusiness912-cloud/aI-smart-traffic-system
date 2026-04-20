@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficAI - Google Maps Dashboard</title>
+  <link rel="stylesheet" href="trafficai-google-dashboard.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="control-panel">
+      <h1>TrafficAI</h1>
+      <p class="subtitle">Smart routing with emergency awareness and route-side fueling intelligence.</p>
+
+      <div class="field-block">
+        <label for="source">Source</label>
+        <input id="source" type="text" placeholder="Enter source or choose from autocomplete">
+        <button id="source-location-btn" type="button" class="soft-btn">Use My Location</button>
+      </div>
+
+      <div class="field-block">
+        <label for="destination">Destination</label>
+        <input id="destination" type="text" placeholder="Enter destination or choose from autocomplete">
+        <button id="destination-location-btn" type="button" class="soft-btn">Use My Location</button>
+      </div>
+
+      <div class="route-mode-group">
+        <button type="button" class="route-mode-btn" data-mode="shortest">Shortest</button>
+        <button type="button" class="route-mode-btn active" data-mode="fastest">Fastest</button>
+        <button type="button" class="route-mode-btn" data-mode="eco">Eco</button>
+      </div>
+
+      <button id="find-route-btn" type="button" class="primary-btn">Generate Route</button>
+
+      <div id="route-status" class="status-card">Map loading...</div>
+      <div id="station-warning" class="warning-card hidden">
+        Caution: No EV or Fuel stations detected on this specific path.
+      </div>
+
+      <section class="list-section">
+        <h2>EV Charging Near Route</h2>
+        <ul id="ev-list"></ul>
+      </section>
+
+      <section class="list-section">
+        <h2>Fuel Stations Near Route</h2>
+        <ul id="fuel-list"></ul>
+      </section>
+    </aside>
+
+    <main class="map-panel">
+      <div id="map"></div>
+      <div id="emergency-overlay" class="emergency-overlay hidden">
+        EMERGENCY: Ambulance approaching on your route. Please clear the path!
+      </div>
+    </main>
+  </div>
+
+  <script src="config/private-config.js"></script>
+  <script src="trafficai-google-dashboard.js"></script>
+</body>
+</html>

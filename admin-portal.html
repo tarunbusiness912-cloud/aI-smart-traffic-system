@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficAI Admin Portal</title>
+  <style>
+    :root {
+      --bg-1: #0f172a;
+      --bg-2: #0b1222;
+      --panel: rgba(15, 23, 42, 0.72);
+      --border: rgba(148, 163, 184, 0.24);
+      --text-main: #e2e8f0;
+      --text-soft: #94a3b8;
+      --accent-1: #22d3ee;
+      --accent-2: #6366f1;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --ok: #34d399;
+      --shadow: 0 24px 70px rgba(2, 6, 23, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(1000px 500px at 8% 12%, rgba(34, 211, 238, 0.16), transparent 58%),
+        radial-gradient(900px 540px at 92% 88%, rgba(99, 102, 241, 0.22), transparent 62%),
+        linear-gradient(145deg, var(--bg-1), var(--bg-2));
+      padding: 28px 18px 34px;
+    }
+
+    .layout {
+      width: min(1260px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      box-shadow: 0 10px 24px rgba(56, 189, 248, 0.3);
+      font-size: 19px;
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .sub {
+      color: var(--text-soft);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border: 1px solid rgba(100, 116, 139, 0.45);
+      background: rgba(15, 23, 42, 0.62);
+      color: #cbd5e1;
+    }
+
+    .status-pill.online {
+      border-color: rgba(16, 185, 129, 0.55);
+      color: #86efac;
+    }
+
+    .status-pill.offline {
+      border-color: rgba(248, 113, 113, 0.55);
+      color: #fda4af;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      min-height: 42px;
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+      box-shadow: 0 10px 22px rgba(99, 102, 241, 0.32);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 10px 22px rgba(16, 185, 129, 0.28);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+      box-shadow: 0 10px 22px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-warn {
+      background: linear-gradient(135deg, #b45309, #f59e0b);
+      box-shadow: 0 10px 22px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-muted {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid rgba(100, 116, 139, 0.35);
+      box-shadow: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .tiny {
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .block {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.32);
+    }
+
+    .field {
+      margin-top: 10px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(100, 116, 139, 0.45);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.78);
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(34, 211, 238, 0.8);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .priority-state {
+      margin-top: 10px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .status-line {
+      font-size: 13px;
+      min-height: 18px;
+      margin-top: 10px;
+      color: var(--text-soft);
+    }
+
+    .status-line.error { color: var(--danger); }
+    .status-line.ok { color: var(--ok); }
+
+    .incident-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .incident-item {
+      border: 1px solid rgba(100, 116, 139, 0.35);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .incident-meta {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .incident-type {
+      font-weight: 700;
+      color: #bfdbfe;
+      margin-bottom: 4px;
+    }
+
+    .empty {
+      border: 1px dashed rgba(100, 116, 139, 0.55);
+      border-radius: 14px;
+      padding: 16px;
+      color: var(--text-soft);
+      text-align: center;
+      background: rgba(15, 23, 42, 0.45);
+      margin-top: 12px;
+    }
+
+    .table-wrap {
+      margin-top: 12px;
+      overflow-x: auto;
+      border: 1px solid rgba(100, 116, 139, 0.35);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: rgba(15, 23, 42, 0.62);
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(100, 116, 139, 0.25);
+      vertical-align: top;
+    }
+
+    th {
+      color: #bfdbfe;
+      font-weight: 700;
+      background: rgba(30, 41, 59, 0.52);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    a.link {
+      color: #a5f3fc;
+      font-size: 13px;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(165, 243, 252, 0.45);
+    }
+
+    a.link:hover {
+      color: #67e8f9;
+    }
+
+    @media (max-width: 1080px) {
+      .col-4,
+      .col-8 {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-actions {
+        flex-direction: column;
+      }
+
+      .quick-actions .btn,
+      .quick-actions a {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body data-required-role="admin">
+  <main class="layout">
+    <section class="panel topbar">
+      <div>
+        <div class="brand">
+          <div class="logo">&#x1F6A6;</div>
+          <h1>TrafficAI Admin Portal</h1>
+        </div>
+        <p class="sub">Incident management, user logs, and emergency corridor controls</p>
+      </div>
+      <div class="meta-row">
+        <span id="admin-user" class="pill">Admin</span>
+        <span id="connection-pill" class="pill status-pill online">Online</span>
+        <button id="logout-btn" class="btn btn-muted" type="button">Logout</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel col-4">
+        <h2>Control Center</h2>
+        <p class="tiny">Enable priority signal handling and publish emergency corridor updates instantly.</p>
+
+        <p id="priority-state" class="priority-state">Ambulance Priority: Checking...</p>
+        <button id="priority-btn" class="btn btn-primary" type="button">Toggle Priority</button>
+
+        <div class="block">
+          <h2>Emergency Trigger</h2>
+          <p class="tiny">Start a panic corridor route. Nearby users get clear-path alerts in real time.</p>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="emergency-source">Start (lat,lng)</label>
+              <input id="emergency-source" type="text" placeholder="14.4644,75.9218">
+            </div>
+            <div class="field">
+              <label for="emergency-destination">Destination (lat,lng)</label>
+              <input id="emergency-destination" type="text" placeholder="14.6000,75.9800">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="emergency-radius">Alert Radius (meters)</label>
+            <input id="emergency-radius" type="number" min="200" max="5000" step="50" value="1200">
+          </div>
+
+          <div class="quick-actions">
+            <button id="emergency-activate-btn" class="btn btn-danger" type="button">Activate Corridor</button>
+            <button id="emergency-deactivate-btn" class="btn btn-muted" type="button">Deactivate</button>
+          </div>
+          <p id="emergency-status" class="status-line">Emergency corridor inactive.</p>
+        </div>
+
+        <div class="block">
+          <h2>Incident Manager</h2>
+          <p class="tiny">Publish closures, accidents, or construction zones to user maps.</p>
+
+          <div class="field">
+            <label for="incident-type">Incident Type</label>
+            <select id="incident-type">
+              <option value="Accident">Accident</option>
+              <option value="Roadwork">Roadwork</option>
+              <option value="Road Closure">Road Closure</option>
+              <option value="Construction">Construction</option>
+            </select>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="incident-lat">Latitude</label>
+              <input id="incident-lat" type="text" placeholder="14.5001">
+            </div>
+            <div class="field">
+              <label for="incident-lng">Longitude</label>
+              <input id="incident-lng" type="text" placeholder="75.9805">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="incident-reporter">Reported By</label>
+            <input id="incident-reporter" type="text" placeholder="admin@trafficai.local">
+          </div>
+
+          <div class="quick-actions">
+            <button id="incident-submit-btn" class="btn btn-success" type="button">Add Incident</button>
+            <button id="refresh-btn" class="btn btn-warn" type="button">Refresh Incidents</button>
+            <a id="user-dashboard-link" class="link" href="user-dashboard.html">Open User Dashboard</a>
+          </div>
+        </div>
+
+        <p id="control-status" class="status-line">Ready.</p>
+      </article>
+
+      <article class="panel col-8">
+        <h2>Pending Incidents</h2>
+        <p class="tiny">Verify incoming incidents to promote them to live traffic advisories.</p>
+        <div id="incident-list" class="incident-list"></div>
+        <div id="incident-empty" class="empty" hidden>No pending incidents right now.</div>
+      </article>
+
+      <article class="panel col-12">
+        <h2>User Logs</h2>
+        <p class="tiny">Registered users with their latest route search from dashboard sync.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Phone</th>
+                <th>Joined</th>
+                <th>Last Route</th>
+                <th>Last Search Time</th>
+              </tr>
+            </thead>
+            <tbody id="user-log-table-body">
+              <tr>
+                <td colspan="5">Loading user logs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="config/private-config.js"></script>
+  <script src="admin-portal.js"></script>
+</body>
+</html>
