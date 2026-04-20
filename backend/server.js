@@ -20,6 +20,10 @@ const fallbackOrigins = [
     "http://127.0.0.1:3000",
     "http://localhost:3000"
 ];
+const renderExternalUrl = String(process.env.RENDER_EXTERNAL_URL || "").trim().replace(/\/+$/, "");
+if (renderExternalUrl) {
+    fallbackOrigins.push(renderExternalUrl);
+}
 const allowedOrigins = (process.env.CORS_ORIGINS || fallbackOrigins.join(","))
     .split(",")
     .map((item) => item.trim())
