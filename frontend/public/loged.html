@@ -320,7 +320,7 @@
     const AUTH_ROLE_KEY = "trafficai_user_role";
 
     const privateConfig = window.TRAFFICAI_PRIVATE_CONFIG || {};
-    const apiCandidates = Array.isArray(privateConfig.apiBaseCandidates)
+    const configuredApiCandidates = Array.isArray(privateConfig.apiBaseCandidates)
       ? privateConfig.apiBaseCandidates
       : ["/api", "http://localhost:8080/api", "http://127.0.0.1:8080/api"];
 
@@ -373,6 +373,21 @@
       } catch (_error) {
         return "";
       }
+    }
+
+    function buildApiCandidates() {
+      const candidates = [...configuredApiCandidates];
+
+      if (/^https?:$/i.test(window.location.protocol) && window.location.origin) {
+        candidates.push(`${window.location.origin}/api`);
+      }
+
+      [8080, 3000, 3001].forEach((port) => {
+        candidates.push(`http://localhost:${port}/api`);
+        candidates.push(`http://127.0.0.1:${port}/api`);
+      });
+
+      return [...new Set(candidates.map(normalizeApiBase).filter(Boolean))];
     }
 
     function getRoleFromStorage() {
@@ -450,7 +465,7 @@
     }
 
     async function detectApiBase() {
-      const normalizedCandidates = [...new Set(apiCandidates.map(normalizeApiBase).filter(Boolean))];
+      const normalizedCandidates = buildApiCandidates();
       for (const candidate of normalizedCandidates) {
         try {
           const response = await fetchWithTimeout(`${candidate}/health`, { method: "GET" }, 3500);
@@ -467,7 +482,9 @@
 
     async function apiRequest(path, body) {
       const base = activeApiBase || (await detectApiBase());
-      if (!base) throw new Error("Service temporarily unavailable. Please try again.");
+      if (!base) {
+        throw new Error("Service unavailable. Start backend server with: npm start");
+      }
 
       const response = await fetchWithTimeout(`${base}${path}`, {
         method: "POST",

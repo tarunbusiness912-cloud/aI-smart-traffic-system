@@ -4,6 +4,7 @@ const { saveUser, verifyUserCredentials, normalizeUsername } = require("../servi
 
 const router = express.Router();
 const DEFAULT_ADMIN_USERNAME = "admin@trafficai.local";
+const ADMIN_ALIASES = new Set(["admin"]);
 
 function getJwtSecret() {
     return process.env.JWT_SECRET || "trafficai-dev-jwt-secret";
@@ -38,6 +39,15 @@ function buildPortalRoute(role) {
     return role === "admin" ? "/admin-portal" : "/user-dashboard";
 }
 
+function isAdminLoginName(normalizedUsername, configuredAdminUsername) {
+    if (!normalizedUsername) return false;
+    return (
+        normalizedUsername === DEFAULT_ADMIN_USERNAME ||
+        normalizedUsername === configuredAdminUsername ||
+        ADMIN_ALIASES.has(normalizedUsername)
+    );
+}
+
 router.post("/signup", async (req, res) => {
     const username = String(req.body?.username || "").trim();
     const password = String(req.body?.password || "");
@@ -54,7 +64,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const normalized = normalizeUsername(username);
-    if (normalized === DEFAULT_ADMIN_USERNAME || normalized === getConfiguredAdminUsername()) {
+    if (isAdminLoginName(normalized, getConfiguredAdminUsername())) {
         return res.status(403).json({ error: "Admin username is reserved and cannot be used for signup." });
     }
 
@@ -96,7 +106,7 @@ router.post("/login", async (req, res) => {
     }
 
     const configuredAdminUsername = getConfiguredAdminUsername();
-    if (normalized === DEFAULT_ADMIN_USERNAME || normalized === configuredAdminUsername) {
+    if (isAdminLoginName(normalized, configuredAdminUsername)) {
         const expectedPassword = getConfiguredAdminPassword();
         if (password !== expectedPassword) {
             return res.status(401).json({ error: "Invalid admin credentials." });
