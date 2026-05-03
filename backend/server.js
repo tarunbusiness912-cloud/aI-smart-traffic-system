@@ -18,15 +18,26 @@ const fallbackOrigins = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:3000",
+<<<<<<< HEAD
     "http://localhost:3000",
     `http://127.0.0.1:${PORT}`,
     `http://localhost:${PORT}`
 ];
 const configuredOrigins = (process.env.CORS_ORIGINS || fallbackOrigins.join(","))
+=======
+    "http://localhost:3000"
+];
+const renderExternalUrl = String(process.env.RENDER_EXTERNAL_URL || "").trim().replace(/\/+$/, "");
+if (renderExternalUrl) {
+    fallbackOrigins.push(renderExternalUrl);
+}
+const allowedOrigins = (process.env.CORS_ORIGINS || fallbackOrigins.join(","))
+>>>>>>> 34b413703414eb9233785b577a1c6385eae1426a
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
 
+<<<<<<< HEAD
 function parseOriginPattern(value) {
     if (!value.includes("*")) return null;
     const escaped = value
@@ -78,6 +89,15 @@ app.use(
             });
         }
         return callback(new Error(`CORS blocked for origin: ${requestOrigin || "unknown"}`));
+=======
+app.use(
+    cors({
+        origin(origin, callback) {
+            if (!origin || origin === "null" || allowedOrigins.includes(origin)) return callback(null, true);
+            return callback(new Error(`CORS blocked for origin: ${origin}`));
+        },
+        credentials: true
+>>>>>>> 34b413703414eb9233785b577a1c6385eae1426a
     })
 );
 app.use(express.json({ limit: "1mb" }));
