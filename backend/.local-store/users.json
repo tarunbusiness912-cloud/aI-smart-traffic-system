@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27T17:08:22.047Z",
+  "users": [
+    {
+      "username": "shantakumarisj",
+      "usernameLower": "shantakumarisj",
+      "phone": "7975953708",
+      "passwordHash": "2ec946e9fa192f4cd53332d175ea9ae4d20ae3c6a5192a1e56d2516dccfe5933e8a6c2643f7e3d2317efdc822588462789c684e07ad0a7b05d714c639f9429ef",
+      "passwordSalt": "76fbfcfae98b8494a7920b58f8e86495",
+      "createdAt": "2026-04-20T16:12:26.240Z",
+      "updatedAt": "2026-04-20T16:12:26.240Z"
+    },
+    {
+      "username": "shantakuamarisj",
+      "usernameLower": "shantakuamarisj",
+      "phone": "7975953708",
+      "passwordHash": "0a3047ebfc6c4e88eb555ba3fdbfcd8ba632bb3a3186d8cf8c87fc3af616db0e7b0ef482906a86015f4ade19b1024bf9405dd6a6871d386e5d444976f986e496",
+      "passwordSalt": "6db008af2f37da21fade83b1fbb4dff1",
+      "createdAt": "2026-04-20T17:10:10.867Z",
+      "updatedAt": "2026-04-20T17:10:10.867Z"
+    },
+    {
+      "username": "meghanasj",
+      "usernameLower": "meghanasj",
+      "phone": "6361598518",
+      "passwordHash": "04108f75702317db7ed0e15c713f093ccd7ccc6028068eb24ffe89927d5e050e7dcf33bcd15c8d32b4214c7c814d4c69b52ae112b27101c928d53920f4a5db61",
+      "passwordSalt": "3ce176022c56855807aac35ca23345c4",
+      "createdAt": "2026-04-20T17:17:08.747Z",
+      "updatedAt": "2026-04-20T17:17:08.747Z"
+    },
+    {
+      "username": "patil",
+      "usernameLower": "patil",
+      "phone": "9902229359",
+      "passwordHash": "ce051a981c61f0ff124cb10b615f6bc00c257724290d1385efbbfb8521824bbd5702443d5f5c332767b9ae4b5f3e77124052e27d0796ae02f77b910cbd197fa2",
+      "passwordSalt": "747df437c84c7f50e262c5450e0f059c",
+      "createdAt": "2026-04-20T19:34:12.584Z",
+      "updatedAt": "2026-04-20T19:34:12.584Z"
+    },
+    {
+      "username": "shan",
+      "usernameLower": "shan",
+      "phone": "9845636989",
+      "passwordHash": "fa4fbbffc08f0ee211c8955338e0c6527ea9baf87a7c857c653e12c29294938d6fe97a2ca6c714bd870f60dfe732828e4909bbe44b23c79cc1d74f420e11417d",
+      "passwordSalt": "5209426c505c8609739764fe434dd7a7",
+      "createdAt": "2026-04-20T19:35:23.518Z",
+      "updatedAt": "2026-04-20T19:35:23.518Z"
+    },
+    {
+      "username": "tharu11",
+      "usernameLower": "tharu11",
+      "phone": "+918152806352",
+      "passwordHash": "1417d685ebd774f241dab5d02500a7828ec4f3aa26b2e3a8360305a3efbf793804b052daa3fff04baad16b2e3990eb56b26093eef504439cc5000f15252fb197",
+      "passwordSalt": "c2fe030a0413f80342f2970fe33925d0",
+      "createdAt": "2026-04-21T03:38:10.993Z",
+      "updatedAt": "2026-04-21T03:38:10.993Z"
+    },
+    {
+      "username": "NANDINI",
+      "usernameLower": "nandini",
+      "phone": "7975938912",
+      "passwordHash": "0317725a33cf90356905fd75cfbf86ada2a6715b6616abe93eaf8571d1a54831e898e8fd0a0919175b9cb06e3ddae20b48bfe70302ef04bac7d30d789119fc83",
+      "passwordSalt": "006dfdef35fa58ade8a6597b7280a1aa",
+      "createdAt": "2026-04-27T17:08:22.047Z",
+      "updatedAt": "2026-04-27T17:08:22.047Z"
+    }
+  ]
+}
